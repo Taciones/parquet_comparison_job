@@ -8,9 +8,13 @@ def compare_files(file1, file2):
     """
     Compares two parquet files and returns True if they are identical, else False.
     """
-    table1 = pq.read_table(file1)
-    table2 = pq.read_table(file2)
-    return table1.equals(table2)
+    try:
+        table1 = pq.read_table(file1)
+        table2 = pq.read_table(file2)
+        return table1.equals(table2)
+    except OSError as e:
+        print(f"Error reading {file1}: {e}")
+        return False
 
 
 def compare_folders(folder1, folder2):
@@ -37,16 +41,6 @@ def compare_folders(folder1, folder2):
             else:
                 result[file1] = "File not found"
             pbar.update(1)
-
-    match_count = len([v for v in result.values() if v == "Match"])
-    not_match_count = len([v for v in result.values() if v == "Not match"])
-    not_found_count = len([v for v in result.values() if v == "File not found"])
-
-    print(f"Summary:")
-    print(f"Total files compared: {len(files)}")
-    print(f"Matched files: {match_count}")
-    print(f"Not matched files: {not_match_count}")
-    print(f"Files not found: {not_found_count}")
 
     return result
 
