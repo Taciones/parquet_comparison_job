@@ -38,6 +38,16 @@ def compare_folders(folder1, folder2):
                 result[file1] = "File not found"
             pbar.update(1)
 
+    match_count = len([v for v in result.values() if v == "Match"])
+    not_match_count = len([v for v in result.values() if v == "Not match"])
+    not_found_count = len([v for v in result.values() if v == "File not found"])
+
+    print(f"Summary:")
+    print(f"Total files compared: {len(files)}")
+    print(f"Matched files: {match_count}")
+    print(f"Not matched files: {not_match_count}")
+    print(f"Files not found: {not_found_count}")
+
     return result
 
 
